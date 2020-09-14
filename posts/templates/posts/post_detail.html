@@ -1,0 +1,65 @@
+{% load static %} {% include 'main/nav.html' %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'posts/main.css' %}">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({{STATIC_URL}}/media/{{post.image}})">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading" style="text-align: center">
+                    <h1>Coding Blogs</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by
+                            <a style="color: #17a2b8;" href="{% url 'user-posts' post.author %}">{{ post.author }}</a>
+                            on {{ post.created }}
+                        </span> Category: {{ post.get_choice1_display }} {{ post.get_choice2_display }}
+
+                    <div class="pt-4">
+                        {% if messages %} {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+
+                    {% if post.author != request.user %} {% if follows %}
+                    <a href="{% url 'unfollow' post.author %}"><button class="btn btn-info">Followed</button></a> {% else %}
+                    <a href="{% url 'follow' post.author %}"><button class="btn btn-outline-info">Follow</button></a> {% endif %} {% endif %} {% if like %}
+                    <a id="like" href="{% url 'dislike' post.slug %}"><button class="btn btn-info"><i class="fas fa-thumbs-up"></i></button></a> {% else %}
+                    <a id="like" href="{% url 'like' post.slug %}"><button class="btn btn-outline-info"><i class="far fa-thumbs-up"></i></button></a> {% endif %}
+                    <button class="btn btn-info">{{ likes.count }} Like{{ likes|pluralize }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Page header ends -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+
+                <h2>{{ post.title }}</h2>
+
+                <p class="article-content">{{ post.content }}</p>
+
+                <a href="{% url 'comment' post.slug %}"><button class="btn btn-info">Comment</button></a>
+
+            </div>
+        </div>
+    </div>
+</article>
+<!-- Post Content Ends -->
+
+<br>
+<br> {% include 'main/footer.html' %}

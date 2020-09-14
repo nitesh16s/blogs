@@ -1,0 +1,44 @@
+{% include 'main/nav.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'posts/main.css' %}">
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({% static 'main/img/harder.jpg' %})">
+<div class="overlay"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="site-heading">
+        <h2><i>TheProfessional'sBlog</i></h2>
+        <span class="subheading">Blogging is Beautiful...</span>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+<small>
+<div class="postform">
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.title|as_crispy_field }}
+		{{ form.image|as_crispy_field }}
+		{{ form.content|as_crispy_field }}
+	    <div class="row">
+	      <div class="col-6">
+	        {{ form.choice1|as_crispy_field }}
+	      </div>
+	      <div class="col-6">
+	        {{ form.choice2|as_crispy_field }}
+	      </div>
+	    </div>
+		<button class="btn btn-outline-info">Add Post</button>
+	</form>
+</div>
+</small>
+
+<br>
+
+{% include 'main/footer.html' %}

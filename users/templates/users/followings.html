@@ -1,0 +1,58 @@
+{% include 'main/nav.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'users/connection.css' %}">
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({{ user.profile.background.url  }})">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-lg-8 col-md-10 mx-auto">
+	      <div class="post-heading">
+	      	<div class="user-data">
+				{% if request.user.profile.id %}
+					<img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ user.profile.image.url }}">
+					<h5>{{ user.username }}</h5>
+					<h5>{{ user.email }}</h5>
+					<h5>{{ user.profile.first_name }} {{ user.profile.last_name }}</h5>
+					
+					<a href="{% url 'update-profile' user.profile.slug %}">
+						<button class="btn btn-outline-info">Update Profile</button>
+					</a>
+				{% else %}
+					<a href="{% url 'create-profile' %}">
+						<button class="btn btn-outline-info">Complete Profile</button>
+					</a>	
+				{% endif %}
+				<a href="{% url 'followers' user.username %}">
+					<button class="btn btn-outline-info"> Follower{{ followings|pluralize }}</button>
+				</a>
+				<a href="{% url 'followings' user.username %}">
+					<button class="btn btn-outline-info"> Following{{ followers|pluralize }}</button>
+				</a>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</header>
+
+<section class="section">
+	<h2 style="text-align: center;">Following</h2>
+	<div class="connections">
+	    {% for following in followings %}
+            <div class="following">
+				<img src="{{ following.following.profile.image.url }}">
+				<h3>{{ following.following }}</h3>
+				<a href="{% url 'unfollow' following.following %}"><button class="btn btn-info">Unfollow</button></a>
+            </div>
+	    {% endfor %}
+	</div>
+</section>
+
+
+<br>
+<br>
+
+{% include 'main/footer.html' %}

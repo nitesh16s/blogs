@@ -1,0 +1,53 @@
+{% include 'main/nav.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'users/connection.css' %}">
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({{ user.profile.background.url  }})">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-lg-8 col-md-10 mx-auto">
+	      <div class="post-heading">
+	      	<div class="user-data">
+				<img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ user.profile.image.url }}">
+				<h5>{{ user.username }}</h5>
+				<h5>{{ user.email }}</h5>
+				<h5>{{ user.profile.first_name }} {{ user.profile.last_name }}</h5>
+				
+				<a href="{% url 'update-profile' user.profile.slug %}">
+					<button class="btn btn-outline-info">Update Profile</button>
+				</a>	
+
+				<a href="{% url 'followers' user.username %}">
+					<button class="btn btn-outline-info">Follower{{ followings|pluralize }}</button>
+				</a>
+				<a href="{% url 'followings' user.username %}">
+					<button class="btn btn-outline-info">Following{{ followers|pluralize }}</button>
+				</a>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</header>
+
+
+<section class="section">
+	<h2 style="text-align: center;">Followers</h2>
+	<div class="connections">
+	    {% for follower in followers %}
+            <div class="following">
+				<img src="{{ follower.follower.profile.image.url }}">
+				<h3>{{ follower.follower }}</h3>
+            </div>
+	    {% endfor %}
+	</div>
+</section>
+
+
+<br>
+<br>
+
+{% include 'main/footer.html' %}

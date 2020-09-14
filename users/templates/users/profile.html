@@ -1,0 +1,65 @@
+{% include 'main/nav.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({{ user.profile.background.url  }})">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-lg-8 col-md-10 mx-auto">
+	      <div class="post-heading">
+	      	<div class="user-data">
+				{% if request.user.profile.id %}
+					<img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ user.profile.image.url }}">
+					<h5>{{ user.username }}</h5>
+					<h5>{{ user.email }}</h5>
+					<h5>{{ user.profile.first_name }} {{ user.profile.last_name }}</h5>
+					
+					<a href="{% url 'update-profile' user.profile.slug %}">
+						<button class="btn btn-outline-info">Update Profile</button>
+					</a>
+				{% else %}
+					<a href="{% url 'create-profile' %}">
+						<button class="btn btn-outline-info">Complete Profile</button>
+					</a>	
+				{% endif %}
+				<a href="{% url 'followers' user.username %}">
+					<button class="btn btn-outline-info">{{ followings.count }} Follower{{ followings|pluralize }}</button>
+				</a>
+				<a href="{% url 'followings' user.username %}">
+					<button class="btn btn-outline-info">{{ followers.count }} Following{{ followers|pluralize }}</button>
+				</a>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</header>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8 col-md-10 mx-auto">
+			<h1>Your Posts</h1><hr>
+			{% for post in posts %}
+				<div class="post-preview">
+					<a href="{% url 'post-detail' post.slug %}">
+					<h2 class="post-title">{{ post.title }}</h2>
+					<h3 class="post-subtitle"></h3>
+					</a>
+					<a href="{% url 'post-update' post.slug %}">
+						<button class="btn btn-outline-primary">Update</button>
+					</a>
+					<p class="post-meta">{{ post.created }}</p>
+				</div>
+				<hr>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<br>
+<br>
+
+{% include 'main/footer.html' %}

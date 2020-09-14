@@ -1,0 +1,63 @@
+{% include 'main/nav.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'users/profile.css' %}">
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url({{ user.profile.background.url  }})">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-lg-8 col-md-10 mx-auto">
+	      <div class="post-heading">
+	      	<div class="user-data">
+				{% if request.user.profile.id %}
+					<img style="width: 150px; height: 150px; border-radius: 50%;" src="{{ user.profile.image.url }}">
+					<h5>{{ user.username }}</h5>
+					<h5>{{ user.email }}</h5>
+					<h5>{{ user.profile.first_name }} {{ user.profile.last_name }}</h5>
+					
+					<a href="{% url 'update-profile' user.username %}">
+						<button class="btn btn-outline-info">Update Profile</button>
+					</a>
+				{% else %}
+					<a href="{% url 'create-profile' %}">
+						<button class="btn btn-outline-info">Complete Profile</button>
+					</a>	
+				{% endif %}
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</header>
+
+<small>
+<div class="container">
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+	    <div class="row">
+	      <div class="col-6">
+	        {{ form.first_name|as_crispy_field }}
+	      </div>
+	      <div class="col-6">
+	        {{ form.last_name|as_crispy_field }}
+	      </div>
+	      <div class="col-6">
+	        {{ form.is_male|as_crispy_field }}
+	      </div>
+	      <div class="col-6">
+	        {{ form.is_female|as_crispy_field }}
+	      </div>
+	    </div>
+
+		<p style="border: 1px solid #eee;">{{ form.image|as_crispy_field }}</p>
+		<p style="border: 1px solid #eee;">{{ form.background|as_crispy_field }}</p>
+		<button class="btn btn-outline-info">Update</button>
+	</form>
+</div>
+</small>
+
+<br>
+
+{% include 'main/footer.html' %}

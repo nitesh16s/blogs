@@ -1,0 +1,31 @@
+body {
+	background: #eee;
+}
+
+.form {
+	width: 40%;
+	margin: auto;
+	padding: 30px;
+	background: #fff;
+	margin-bottom: 50px;
+}
+
+.login {
+	width: 45%;
+}
+
+.signup {
+	width: 45%;
+	float: right;
+}
+
+@media only screen and (max-width: 800px) {
+	.form {
+		width: 90%;
+		margin: auto;
+		padding: 30px;
+		background: #fff;
+		margin-bottom: 50px;
+	}
+
+}
